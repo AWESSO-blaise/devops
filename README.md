@@ -1,69 +1,121 @@
-
 # DevOps TP Final - Lacets Connectés API
 
-## Prérequis
-- VirtualBox
-- Vagrant
-- Git
+---
+
+## ÉTAPE 1 — Lancer l'infrastructure
+
+"Je lance une seule commande pour créer automatiquement une VM Debian sur VirtualBox avec k3s installé dessus. Tout est automatisé grâce à Vagrant."
+
+```bash
+cd ~/devops
+vagrant up
+```
+
+"Vagrant télécharge et configure la VM Debian avec 2Go de RAM, installe k3s et le runner GitHub Actions automatiquement."
+
+---
+
+## ÉTAPE 2 — Récupérer l'IP et l'inventaire Ansible
+
+"Ce script bash récupère automatiquement l'IP de la VM et génère un inventaire Ansible."
+
+```bash
+bash scripts/get_ip.sh
+cat inventory.ini
+```
+
+---
+
+## ÉTAPE 3 — Image Docker
+
+"J'ai conteneurisé l'API avec un Dockerfile multi-stage optimisé. L'image fait seulement 44MB grâce à Alpine."
+
+Ouvrir : https://hub.docker.com/r/awesso/laces-api/tags
+
+"On voit l'image avec le tag latest, 44MB, buildée automatiquement par la pipeline CI/CD."
+
+---
+
+## ÉTAPE 4 — Déploiement Kubernetes
+
+"L'API et MySQL sont déployés sur k3s. MySQL a un volume persistant. L'API est accessible uniquement depuis l'intérieur du cluster. L'autoscaler gère entre 1 et 3 pods selon la charge."
+
+```bash
+vagrant ssh
+sudo kubectl get all
+```
+
+"On voit les pods en Running, les services en ClusterIP, et le HPA qui surveille la charge."
+
+---
+
+## ÉTAPE 5 — Pipeline CI/CD
+
+"Je pousse du code sur main pour déclencher la pipeline automatiquement."
+
+```bash
+exit
+cd ~/devops
+echo "# update" >> README.md
+git add .
+git commit -m "demo: trigger pipeline"
+git push origin main
+```
+
+Ouvrir : https://github.com/AWESSO-blaise/devops/actions
+
+"Le premier job build l'image Docker et la pousse sur Docker Hub. Le deuxième job deploy tourne sur le runner self-hosted installé sur la VM et déploie sur k3s."
+
+---
+
+## ÉTAPE 6 — Tester l'API
+
+"Je teste l'API directement depuis l'intérieur du cluster."
+
+```bash
+vagrant ssh
+sudo kubectl get pods
+sudo kubectl exec -it <nom-du-pod-laces-api> -- wget -qO- http://localhost:3000/health
+```
+
+"L'API répond avec status ok."
+
+---
+
+## ÉTAPE 7 — Conclusion
+
+"La VM se crée automatiquement avec Vagrant, l'image Docker est buildée et déployée via GitHub Actions avec un runner self-hosted, Kubernetes gère la haute disponibilité, et les données MySQL sont persistantes."
+
+---
+
+## ⚠️ Checklist avant la démo
+
+- [ ] Nouveau token runner sur https://github.com/AWESSO-blaise/devops/settings/actions/runners/new
+- [ ] Mettre à jour le token dans le Vagrantfile sur GitHub
+- [ ] `vagrant destroy -f && vagrant up`
+- [ ] Pipeline au vert
+- [ ] `sudo kubectl get all` — pods en Running
+
+---
 
 ## Structure du projet
+
+```
 devops/
-├── app/
+├── app/                    
 │   ├── server.js
 │   ├── package.json
 │   ├── Dockerfile
 │   └── .dockerignore
-├── k8s/
+├── k8s/                    
 │   ├── api-deployment.yaml
 │   └── mysql-deployment.yaml
 ├── scripts/
-│   └── get_ip.sh
-├── Vagrantfile
+│   └── get_ip.sh           
+├── ansible/
+│   └── playbook.yml        
+├── demo.sh                 
+├── Vagrantfile             
 └── .github/workflows/
-└── ci-cd.yml
-## Partie 1 - Infrastructure
-
-### Démarrer la VM
-```bash
-vagrant up
+    └── ci-cd.yml           
 ```
-
-### Récupérer l'IP et générer l'inventaire Ansible
-```bash
-bash scripts/get_ip.sh
-```
-
-## Partie 2 - Docker
-
-Image disponible sur Docker Hub : `awesso/laces-api:latest`
-
-### Build manuel
-```bash
-docker build -t awesso/laces-api:latest ./app
-```
-
-## Partie 3 - Kubernetes
-
-### Déployer sur k3s
-```bash
-vagrant ssh
-sudo kubectl apply -f /vagrant/k8s/
-sudo kubectl get all
-```
-
-### Tester l'API
-```bash
-sudo kubectl exec -it <pod-name> -- wget -qO- http://localhost:3000/health
-```
-
-## Partie 4 - CI/CD
-
-Pipeline GitHub Actions automatique sur push sur `main` :
-1. Build de l'image Docker
-2. Push sur Docker Hub (`awesso/laces-api:latest`)
-
-## Notes
-- API accessible uniquement depuis l'intérieur du cluster (ClusterIP)
-- MySQL utilise un PersistentVolumeClaim pour la persistance des données
-- HPA configuré : min 1 pod, max 3 pods (seuil CPU/RAM 70%)
-# update
