@@ -119,3 +119,9 @@ devops/
 └── .github/workflows/
     └── ci-cd.yml           
 ```
+## Lancer la démo complète
+
+```bash
+cd ~/devops
+bash demo.sh
+```
