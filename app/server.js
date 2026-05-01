@@ -13,16 +13,10 @@ const db = mysql.createConnection({
 });
 
 db.connect((err) => {
-  if (err) {
-    console.error('DB connection failed:', err);
-  } else {
+  if (err) { console.error('DB connection failed:', err); }
+  else {
     console.log('Connected to MySQL');
-    db.query(`CREATE TABLE IF NOT EXISTS laces (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      owner VARCHAR(255),
-      status VARCHAR(50),
-      battery INT
-    )`);
+    db.query('CREATE TABLE IF NOT EXISTS laces (id INT AUTO_INCREMENT PRIMARY KEY, owner VARCHAR(255), status VARCHAR(50), battery INT)');
   }
 });
 
@@ -37,8 +31,18 @@ app.get('/laces', (req, res) => {
 
 app.post('/laces', (req, res) => {
   const { owner, status, battery } = req.body;
-  db.query('INSERT INTO laces (owner, status, battery) VALUES (?, ?, ?)',
-    [owner, status, battery],
-    (err, result) => {
-      if (err) return res.status(500).
-[200~EOF~
+  db.query('INSERT INTO laces (owner, status, battery) VALUES (?, ?, ?)', [owner, status, battery], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(201).json({ id: result.insertId, owner, status, battery });
+  });
+});
+
+app.delete('/laces/:id', (req, res) => {
+  db.query('DELETE FROM laces WHERE id = ?', [req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: 'Deleted' });
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log('API running on port ' + PORT));
