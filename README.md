@@ -66,3 +66,4 @@ Pipeline GitHub Actions automatique sur push sur `main` :
 - API accessible uniquement depuis l'intérieur du cluster (ClusterIP)
 - MySQL utilise un PersistentVolumeClaim pour la persistance des données
 - HPA configuré : min 1 pod, max 3 pods (seuil CPU/RAM 70%)
+# update
