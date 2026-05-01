@@ -12,8 +12,20 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update -y
     apt-get install -y curl
+
+    # Installation k3s
     curl -sfL https://get.k3s.io | sh -
     systemctl enable k3s
     systemctl start k3s
+
+    # Installation GitHub Actions Runner
+    mkdir -p /home/vagrant/actions-runner
+    cd /home/vagrant/actions-runner
+    curl -o actions-runner.tar.gz -L https://github.com/actions/runner/releases/download/v2.334.0/actions-runner-linux-x64-2.334.0.tar.gz
+    tar xzf actions-runner.tar.gz
+    chown -R vagrant:vagrant /home/vagrant/actions-runner
+    sudo -u vagrant ./config.sh --url https://github.com/AWESSO-blaise/devops --token BCMOSYGBUMN7BNJMMOZSFCLJ6UAIS --unattended --name k3s-server --labels self-hosted
+    ./svc.sh install vagrant
+    ./svc.sh start
   SHELL
 end
