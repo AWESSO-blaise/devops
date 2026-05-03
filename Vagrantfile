@@ -43,12 +43,12 @@ EOF
       systemctl start node_exporter
 
       # GitHub Actions Runner
+    # GitHub Actions Runner
       mkdir -p /home/vagrant/actions-runner
-      cd /home/vagrant/actions-runner
-      curl -o actions-runner.tar.gz -L https://github.com/actions/runner/releases/download/v2.334.0/actions-runner-linux-x64-2.334.0.tar.gz
-      tar xzf actions-runner.tar.gz
+      curl -o /home/vagrant/actions-runner/actions-runner.tar.gz -L https://github.com/actions/runner/releases/download/v2.334.0/actions-runner-linux-x64-2.334.0.tar.gz
+      cd /home/vagrant/actions-runner && tar xzf actions-runner.tar.gz
       chown -R vagrant:vagrant /home/vagrant/actions-runner
-      sudo -u vagrant /home/vagrant/actions-runner/config.sh --url https://github.com/AWESSO-blaise/devops --token BCMOSYBA53D33Z47TTHBRFTJ64TH2 --unattended --name k3s-server --labels self-hosted
+      sudo -u vagrant /home/vagrant/actions-runner/config.sh --url https://github.com/AWESSO-blaise/devops --token BCMOSYBA53D33Z47TTHBRFTJ64TH2 --unattended --name k3s-server --labels self-hosted --replace
       /home/vagrant/actions-runner/svc.sh install vagrant
       /home/vagrant/actions-runner/svc.sh start
     SHELL
