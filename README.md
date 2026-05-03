@@ -83,16 +83,15 @@ sudo kubectl exec -it <nom-du-pod-laces-api> -- wget -qO- http://localhost:3000/
 ---
 ## ÉTAPE 7 — Monitoring Grafana + Prometheus
 
-"J'ai mis en place une VM de monitoring avec Grafana et Prometheus. Node Exporter est installé sur les 2 VMs pour collecter les métriques."
+"J'ai mis en place une deuxième VM de monitoring avec Grafana et Prometheus. Node Exporter est installé sur les 2 VMs pour collecter les métriques système en temps réel."
 
 Ouvrir dans le navigateur : http://localhost:3000
 
-"On voit le dashboard Node Exporter Full qui affiche les métriques CPU, mémoire et disque des 2 serveurs en temps réel."
+"On voit le dashboard Node Exporter Full qui affiche les métriques CPU, mémoire et disque des 2 serveurs. Dans le menu Job en haut on peut switcher entre k3s-server et monitoring."
 
-Dans le menu **Job** en haut, sélectionner `k3s-server` ou `monitoring` pour switcher entre les 2 serveurs.
+---
 
 ## ÉTAPE 8 — Conclusion
-
 "La VM se crée automatiquement avec Vagrant, l'image Docker est buildée et déployée via GitHub Actions avec un runner self-hosted, Kubernetes gère la haute disponibilité, et les données MySQL sont persistantes."
 
 ---
