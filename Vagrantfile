@@ -59,6 +59,8 @@ EOF
     mon.vm.box = "debian/bookworm64"
     mon.vm.hostname = "monitoring"
     mon.vm.network "private_network", ip: "192.168.56.11"
+    mon.vm.network "forwarded_port", guest: 3000, host: 3000
+    mon.vm.network "forwarded_port", guest: 9090, host: 9090
 
     mon.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
@@ -69,6 +71,7 @@ EOF
     mon.vm.provision "shell", inline: <<-SHELL
       apt-get update -y
       apt-get install -y curl wget
+
 
       # Node Exporter
       useradd --no-create-home --shell /bin/false node_exporter
