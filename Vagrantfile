@@ -48,7 +48,7 @@ EOF
       curl -o actions-runner.tar.gz -L https://github.com/actions/runner/releases/download/v2.334.0/actions-runner-linux-x64-2.334.0.tar.gz
       tar xzf actions-runner.tar.gz
       chown -R vagrant:vagrant /home/vagrant/actions-runner
-      sudo -u vagrant /home/vagrant/actions-runner/config.sh --url https://github.com/AWESSO-blaise/devops --token BCMOSYGBUMN7BNJMMOZSFCLJ6UAIS --unattended --name k3s-server --labels self-hosted
+      sudo -u vagrant /home/vagrant/actions-runner/config.sh --url https://github.com/AWESSO-blaise/devops --token BCMOSYBA53D33Z47TTHBRFTJ64TH2 --unattended --name k3s-server --labels self-hosted
       /home/vagrant/actions-runner/svc.sh install vagrant
       /home/vagrant/actions-runner/svc.sh start
     SHELL
