@@ -6,8 +6,20 @@ on:
       - main
 
 jobs:
+  infrastructure:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure infrastructure
+        run: |
+          cd /vagrant
+          vagrant up --provision
+
   build-and-push:
     runs-on: ubuntu-latest
+    needs: infrastructure
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
