@@ -96,13 +96,6 @@ Ouvrir dans le navigateur : http://localhost:3000
 
 ---
 
-## ⚠️ Checklist avant la démo
-
-- [ ] Nouveau token runner sur https://github.com/AWESSO-blaise/devops/settings/actions/runners/new
-- [ ] Mettre à jour le token dans le Vagrantfile sur GitHub
-- [ ] `vagrant destroy -f && vagrant up`
-- [ ] Pipeline au vert
-- [ ] `sudo kubectl get all` — pods en Running
 
 ---
 
