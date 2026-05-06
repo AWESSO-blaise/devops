@@ -42,8 +42,7 @@ Ouvrir : https://hub.docker.com/r/awesso/laces-api/tags
 
 ```bash
 cd ~/devops
-vagrant ssh
-sudo kubectl get all
+vagrant ssh k3s -c "sudo kubectl get all"
 ```
 
 "On voit les pods en Running, les services en ClusterIP, et le HPA qui surveille la charge."
@@ -74,9 +73,9 @@ Ouvrir : https://github.com/AWESSO-blaise/devops/actions
 "Je teste l'API directement depuis l'intérieur du cluster."
 
 ```bash
-vagrant ssh
-sudo kubectl get pods
-sudo kubectl exec -it <nom-du-pod-laces-api> -- wget -qO- http://localhost:3000/health
+vagrant ssh k3s -c "sudo kubectl get pods"
+vagrant ssh k3s -c "sudo kubectl exec -it \$(sudo kubectl get pods -l app=laces-api -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://localhost:3000/health"
+
 ```
 
 "L'API répond avec status ok."
