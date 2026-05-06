@@ -41,6 +41,7 @@ Ouvrir : https://hub.docker.com/r/awesso/laces-api/tags
 "L'API et MySQL sont déployés sur k3s. MySQL a un volume persistant. L'API est accessible uniquement depuis l'intérieur du cluster. L'autoscaler gère entre 1 et 3 pods selon la charge."
 
 ```bash
+cd ~/devops
 vagrant ssh
 sudo kubectl get all
 ```
