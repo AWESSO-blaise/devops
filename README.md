@@ -73,6 +73,7 @@ Ouvrir : https://github.com/AWESSO-blaise/devops/actions
 "Je teste l'API directement depuis l'intérieur du cluster."
 
 ```bash
+cd ~/devops
 vagrant ssh k3s -c "sudo kubectl get pods"
 vagrant ssh k3s -c "sudo kubectl exec -it \$(sudo kubectl get pods -l app=laces-api -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://localhost:3000/health"
 
