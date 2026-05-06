@@ -129,3 +129,4 @@ bash demo.sh
 ## Note sur le code source
 
 Le repo original du TP (https://github.com/almoggutin/Node-Express-RESTAPI-MySQL-JS-Example) n'était plus disponible au moment du développement. Une API Node.js/Express/MySQL équivalente a donc été développée from scratch avec les mêmes fonctionnalités : gestion des lacets connectés avec les routes GET, POST et DELETE.
+# trigger
