@@ -1,7 +1,7 @@
 # DevOps TP Final - Lacets Connectés API
 
 ---
-
+Memebres du groupe : Awesso , Sawadogo , Coulibaly 
 ## ÉTAPE 1 — Lancer l'infrastructure
 
 "Je lance une seule commande pour créer automatiquement une VM Debian sur VirtualBox avec k3s installé dessus. Tout est automatisé grâce à Vagrant."
